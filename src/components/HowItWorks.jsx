@@ -27,7 +27,7 @@ const HowItWorks = () => {
         }
     ];
 
-    // Framer Motion অ্যানিমেশন কনফিগারেশন (WhyChooseUs ফরম্যাট অনুসরণ করে)
+    // Framer Motion অ্যানিমেশন কনফিগারেশন (আপনার কোডটি হুবহু রাখা হয়েছে)
     const containerVariants = {
         hidden: { opacity: 0 },
         visible: {
@@ -46,31 +46,31 @@ const HowItWorks = () => {
     };
 
     return (
-        <section className="bg-white py-24 relative overflow-hidden border-b border-slate-200/60">
+        <section className="bg-white py-16 md:py-24 relative overflow-hidden border-b border-slate-200/60 w-full">
             {/* Ambient background glow matching layout design */}
-            <div className="absolute top-1/2 right-1/4 w-96 h-96 bg-emerald-500/5 rounded-full blur-3xl pointer-events-none" />
-            <div className="absolute bottom-0 left-1/4 w-96 h-96 bg-cyan-500/5 rounded-full blur-3xl pointer-events-none" />
+            <div className="absolute top-1/2 right-1/4 w-[280px] sm:w-96 h-[280px] sm:h-96 bg-emerald-500/5 rounded-full blur-3xl pointer-events-none" />
+            <div className="absolute bottom-0 left-1/4 w-[280px] sm:w-96 h-[280px] sm:h-96 bg-cyan-500/5 rounded-full blur-3xl pointer-events-none" />
 
-            <div className="max-w-7xl mx-auto px-6 md:px-16 relative z-10">
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-16 relative z-10">
                 
-                {/* Header Section */}
-                <div className="text-center max-w-3xl mx-auto mb-20">
+                {/* Header Section - Responsive margins & text sizing */}
+                <div className="text-center max-w-3xl mx-auto mb-12 md:mb-20">
                     <div className="inline-flex items-center gap-1.5 bg-gradient-to-r from-cyan-500/10 to-emerald-500/10 border border-cyan-500/20 text-cyan-600 font-semibold text-xs uppercase tracking-widest px-3 py-1.5 rounded-full mb-4">
                         <span className="w-1.5 h-1.5 bg-cyan-500 rounded-full animate-ping" />
                         Application Workflow
                     </div>
                     
-                    <h2 className="text-4xl md:text-5xl font-black tracking-tight text-slate-900 leading-tight">
+                    <h2 className="text-2xl sm:text-4xl md:text-5xl font-black tracking-tight text-slate-900 leading-tight">
                         How Does <span className="bg-gradient-to-r from-cyan-600 to-emerald-600 bg-clip-text text-transparent">StudyNook</span> Work?
                     </h2>
-                    <p className="text-slate-500 mt-4 text-sm md:text-base max-w-xl mx-auto leading-relaxed">
+                    <p className="text-slate-500 mt-3 md:mt-4 text-xs sm:text-sm md:text-base max-w-xl mx-auto leading-relaxed px-2">
                         A clean full-stack architectural breakdown showing how students and library room hosts interact with the platform seamlessly.
                     </p>
                 </div>
 
-                {/* Highly Interactive Grid - Matched with your design */}
+                {/* Highly Responsive Grid Layout */}
                 <motion.div 
-                    className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8"
+                    className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8"
                     variants={containerVariants}
                     initial="hidden"
                     whileInView="visible"
@@ -81,20 +81,20 @@ const HowItWorks = () => {
                             key={idx}
                             variants={itemVariants}
                             whileHover={{ y: -6, scale: 1.01 }}
-                            className="group flex flex-col items-center text-center p-6 bg-slate-50/50 hover:bg-white border border-slate-100 hover:border-slate-200/80 rounded-2xl transition-all duration-300 shadow-sm hover:shadow-xl relative cursor-pointer"
+                            className="group flex flex-col items-center text-center p-6 md:p-8 bg-slate-50/50 hover:bg-white border border-slate-100 hover:border-slate-200/80 rounded-2xl transition-all duration-300 shadow-sm hover:shadow-xl relative cursor-pointer w-full"
                         >
                             {/* Step Number Badge */}
-                            <span className="absolute top-4 right-5 text-sm font-black text-slate-200 group-hover:text-cyan-500/20 transition-colors duration-300">
+                            <span className="absolute top-4 right-5 text-xs sm:text-sm font-black text-slate-200 group-hover:text-cyan-500/20 transition-colors duration-300">
                                 0{idx + 1}
                             </span>
 
                             {/* Animated Icon Container */}
-                            <div className="p-4 bg-white border border-slate-100 rounded-2xl group-hover:bg-gradient-to-r group-hover:from-cyan-500 group-hover:to-emerald-500 group-hover:scale-105 group-hover:shadow-lg group-hover:shadow-cyan-500/20 transition-all duration-500 mb-6 flex-shrink-0">
+                            <div className="p-3.5 md:p-4 bg-white border border-slate-100 rounded-2xl group-hover:bg-gradient-to-r group-hover:from-cyan-500 group-hover:to-emerald-500 group-hover:scale-105 group-hover:shadow-lg group-hover:shadow-cyan-500/20 transition-all duration-500 mb-5 md:mb-6 flex-shrink-0">
                                 {step.icon}
                             </div>
 
                             {/* Step Text Contents */}
-                            <h3 className="text-lg md:text-xl font-bold text-slate-900 mb-3 group-hover:text-cyan-600 transition-colors duration-300">
+                            <h3 className="text-base md:text-xl font-bold text-slate-900 mb-2 md:mb-3 group-hover:text-cyan-600 transition-colors duration-300 break-words w-full">
                                 {step.title}
                             </h3>
                             <p className="text-slate-500 group-hover:text-slate-600 text-xs md:text-sm leading-relaxed font-medium px-1">
