@@ -2,21 +2,19 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { Menu, X } from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
+import { FiMenu, FiX, FiArrowUpRight } from "react-icons/fi";
 import { useState, useEffect } from "react";
 
 const Navbar = () => {
     const [isOpen, setIsOpen] = useState(false);
     const [isScrolled, setIsScrolled] = useState(false);
+    const [hoveredIndex, setHoveredIndex] = useState(null);
 
-    // পেজ স্ক্রোল ট্রানজিশন হ্যান্ডেল করার জন্য ইফেক্ট
+    // পেজ স্ক্রোল ডিটেকশন ইফেক্ট
     useEffect(() => {
         const handleScroll = () => {
-            if (window.scrollY > 15) {
-                setIsScrolled(true);
-            } else {
-                setIsScrolled(false);
-            }
+            setIsScrolled(window.scrollY > 20);
         };
         window.addEventListener("scroll", handleScroll);
         return () => window.removeEventListener("scroll", handleScroll);
@@ -33,111 +31,155 @@ const Navbar = () => {
     return (
         <nav className={`sticky top-0 z-50 transition-all duration-300 ${
             isScrolled 
-                ? "bg-white/80 backdrop-blur-md border-b border-slate-200/60 shadow-sm py-1" 
-                : "bg-white border-b border-gray-100 py-2"
+                ? "bg-white/80 backdrop-blur-xl border-b border-slate-200/50 shadow-[0_2px_15px_-10px_rgba(0,0,0,0.04)] py-1" 
+                : "bg-white border-b border-slate-100 py-2.5"
         }`}>
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                {/* বড় লোগোটি সুন্দরভাবে সেট করার জন্য উচ্চতা পারফেক্টলি h-16 রাখা হয়েছে */}
                 <div className="flex items-center justify-between h-16">
 
-                    {/* Logo Area */}
-                    <Link href="/" className="flex items-center group transition-transform duration-300 hover:scale-[1.02]">
-                        <Image
-                            src="/assets/studynook.png"
-                            width={110}
-                            height={110}
-                            alt="StudyNook Logo"
-                            className="w-[110px] h-auto object-contain"
-                            priority
-                        />
-                    </Link>
-
-                    {/* Middle Menu - Desktop with Sliding Line Animation */}
-                    <ul className="hidden md:flex items-center gap-5 lg:gap-7 text-sm font-medium text-slate-600">
-                        {menuLinks.map((link) => (
-                            <li key={link.href}>
-                                <Link
-                                    href={link.href}
-                                    className="relative py-2 text-slate-600 hover:text-cyan-600 font-medium transition-colors duration-300 group"
-                                >
-                                    {link.name}
-                                    {/* স্লিক আন্ডারলাইন এনিমেশন */}
-                                    <span className="absolute bottom-0 left-0 w-0 h-[2px] bg-gradient-to-r from-cyan-500 to-emerald-500 group-hover:w-full transition-all duration-300" />
-                                </Link>
-                            </li>
-                        ))}
-                    </ul>
-
-                    {/* Right Menu - Desktop Action Buttons */}
-                    <ul className="hidden md:flex items-center gap-5 text-sm font-medium">
-                        <li>
-                            <Link
-                                href="/login"
-                                className="text-slate-600 hover:text-cyan-600 transition-colors duration-300 py-2 px-3 rounded-md hover:bg-slate-50"
-                            >
-                                Login
-                            </Link>
-                        </li>
-
-                        <li>
-                            <Link
-                                href="/register"
-                                className="bg-gradient-to-r from-cyan-500 to-emerald-500 hover:from-cyan-600 hover:to-emerald-600 text-white font-semibold px-5 py-2.5 rounded-full transition-all duration-300 shadow-md hover:shadow-cyan-500/10 cursor-pointer"
-                            >
-                                Register
-                            </Link>
-                        </li>
-                    </ul>
-
-                    {/* Mobile Menu Toggle Button */}
-                    <button
-                        onClick={() => setIsOpen(!isOpen)}
-                        className="md:hidden p-2 text-slate-700 hover:text-cyan-600 hover:bg-slate-50 rounded-lg transition-all cursor-pointer"
+                    {/* 🚀 লোগো সেকশন - চারপাশের অতিরিক্ত স্পেস কেটে লোগো বড় করা হয়েছে */}
+                    <motion.div 
+                        className="flex items-center select-none"
+                        whileHover={{ scale: 1.03 }}
+                        whileTap={{ scale: 0.98 }}
+                        transition={{ type: "spring", stiffness: 300, damping: 18 }}
                     >
-                        {isOpen ? <X size={26} /> : <Menu size={26} />}
-                    </button>
-                </div>
+                        <Link href="/" className="flex items-center relative group">
+                            {/* লোগোর পেছনের প্রিমিয়াম গ্লো ইফেক্ট */}
+                            <span className="absolute -inset-2 bg-gradient-to-r from-emerald-500/10 to-cyan-500/10 rounded-2xl blur-md opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                            
+                            {/* কন্টেইনার এবং মিক্স-ব্লেন্ড মোড অপ্টিমাইজেশন */}
+                            <div className="relative w-[160px] h-[60px] flex items-center justify-center overflow-hidden mix-blend-multiply">
+                                <Image
+                                    src="/assets/studynook.png"
+                                    width={160}
+                                    height={60}
+                                    alt="StudyNook Logo"
+                                    /* 
+                                      scale-[1.65] ব্যবহারের মাধ্যমে ইমেজের ভেতরের অতিরিক্ত 
+                                      ফাঁকা জায়গা বাদ দিয়ে আসল লোগোটিকে জুম করে বড় করা হয়েছে।
+                                    */
+                                    className="w-full h-full object-contain scale-[1.65] transform transition-transform"
+                                    priority
+                                />
+                            </div>
+                        </Link>
+                    </motion.div>
 
-                {/* Animated Mobile Dropdown Menu */}
-                <div className={`md:hidden overflow-hidden transition-all duration-300 origin-top transform ${
-                    isOpen ? "max-h-[450px] opacity-100 pb-5" : "max-h-0 opacity-0 pointer-events-none"
-                }`}>
-                    <ul className="flex flex-col gap-2 pt-2 text-sm font-medium text-slate-700 border-t border-slate-100">
-                        {menuLinks.map((link) => (
-                            <li key={link.href}>
-                                <Link
-                                    href={link.href}
-                                    onClick={() => setIsOpen(false)}
-                                    className="block py-2.5 px-3 rounded-lg hover:bg-slate-50 hover:text-cyan-600 transition-all"
+                    {/* 🎯 মিডল মেনু - স্লিক ফলোয়ার ক্যাপসুল অ্যানিমেশন */}
+                    <ul 
+                        className="hidden md:flex items-center gap-1 text-[13.5px] font-semibold text-slate-600 relative"
+                        onMouseLeave={() => setHoveredIndex(null)}
+                    >
+                        {menuLinks.map((link, index) => (
+                            <li key={link.href} className="relative">
+                                <Link 
+                                    href={link.href} 
+                                    onMouseEnter={() => setHoveredIndex(index)}
+                                    className={`relative z-10 px-3 py-1.5 rounded-full block transition-colors duration-200 tracking-wide ${
+                                        hoveredIndex === index ? "text-cyan-600" : "text-slate-600"
+                                    }`}
                                 >
                                     {link.name}
                                 </Link>
+
+                                <AnimatePresence>
+                                    {hoveredIndex === index && (
+                                        <motion.span
+                                            layoutId="navHoverPill"
+                                            className="absolute inset-0 bg-slate-100/80 border border-slate-200/30 rounded-full z-0"
+                                            initial={{ opacity: 0, scale: 0.96 }}
+                                            animate={{ opacity: 1, scale: 1 }}
+                                            exit={{ opacity: 0, scale: 0.96 }}
+                                            transition={{ type: "spring", stiffness: 400, damping: 28 }}
+                                        />
+                                    )}
+                                </AnimatePresence>
                             </li>
                         ))}
+                    </ul>
 
-                        {/* Mobile Auth Divider */}
-                        <div className="h-[1px] bg-slate-100 my-2" />
-
-                        <li>
+                    {/* ⚡ রাইট মেনু - প্রিমিয়াম গ্রেডিয়েন্ট বাটন লেআউট */}
+                    <div className="hidden md:flex items-center gap-4 text-[13.5px] font-semibold">
+                        <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.97 }}>
                             <Link
                                 href="/login"
-                                onClick={() => setIsOpen(false)}
-                                className="block py-2.5 px-3 rounded-lg hover:bg-slate-50 hover:text-cyan-600 transition-all"
+                                className="text-slate-600 hover:text-cyan-600 transition-colors duration-200 py-1.5 px-2 block"
                             >
                                 Login
                             </Link>
-                        </li>
+                        </motion.div>
 
-                        <li className="px-3 pt-2">
+                        <motion.div 
+                            whileHover={{ scale: 1.03, y: -0.5 }} 
+                            whileTap={{ scale: 0.97 }}
+                        >
                             <Link
                                 href="/register"
-                                onClick={() => setIsOpen(false)}
-                                className="block text-center bg-gradient-to-r from-cyan-500 to-emerald-500 text-white font-semibold py-2.5 rounded-full shadow-sm"
+                                className="bg-gradient-to-r from-cyan-500 to-emerald-500 hover:from-cyan-600 hover:to-emerald-600 text-white font-bold px-4.5 py-1.5 rounded-full transition-all duration-300 shadow-sm hover:shadow-cyan-500/10 flex items-center gap-1 group tracking-wide text-xs"
                             >
                                 Register
+                                <FiArrowUpRight size={14} className="group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
                             </Link>
-                        </li>
-                    </ul>
+                        </motion.div>
+                    </div>
+
+                    {/* মোবাইল মেনু টগল */}
+                    <motion.button
+                        whileTap={{ scale: 0.9 }}
+                        onClick={() => setIsOpen(!isOpen)}
+                        className="md:hidden p-1.5 text-slate-700 hover:text-cyan-600 hover:bg-slate-50 rounded-xl transition-all"
+                    >
+                        {isOpen ? <FiX size={22} /> : <FiMenu size={22} />}
+                    </motion.button>
                 </div>
+
+                {/* মোবাইল ড্রপডাউন */}
+                <AnimatePresence>
+                    {isOpen && (
+                        <motion.div 
+                            initial={{ opacity: 0, height: 0 }}
+                            animate={{ opacity: 1, height: "auto" }}
+                            exit={{ opacity: 0, height: 0 }}
+                            transition={{ type: "spring", stiffness: 130, damping: 17 }}
+                            className="md:hidden overflow-hidden border-t border-slate-100"
+                        >
+                            <ul className="flex flex-col gap-1 py-3 text-sm font-semibold text-slate-700">
+                                {menuLinks.map((link, i) => (
+                                    <motion.li 
+                                        key={link.href}
+                                        initial={{ opacity: 0, x: -15 }}
+                                        animate={{ opacity: 1, x: 0 }}
+                                        transition={{ delay: i * 0.04 }}
+                                    >
+                                        <Link
+                                            href={link.href}
+                                            onClick={() => setIsOpen(false)}
+                                            className="block py-2 px-3 rounded-lg hover:bg-slate-50 hover:text-cyan-600 transition-all"
+                                        >
+                                            {link.name}
+                                        </Link>
+                                    </motion.li>
+                                ))}
+
+                                <div className="h-[1px] bg-slate-100 my-1.5 mx-3" />
+
+                                <motion.li initial={{ opacity: 0, x: -15 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: menuLinks.length * 0.04 }} className="px-3">
+                                    <Link href="/login" onClick={() => setIsOpen(false)} className="block text-center py-2 rounded-lg border border-slate-200 hover:bg-slate-50">
+                                        Login
+                                    </Link>
+                                </motion.li>
+
+                                <motion.li initial={{ opacity: 0, x: -15 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: (menuLinks.length + 1) * 0.04 }} className="px-3 pt-1">
+                                    <Link href="/register" onClick={() => setIsOpen(false)} className="block text-center bg-gradient-to-r from-cyan-500 to-emerald-500 text-white font-bold py-2 rounded-full flex items-center justify-center gap-1">
+                                        Register <FiArrowUpRight size={14} />
+                                    </Link>
+                                </motion.li>
+                            </ul>
+                        </motion.div>
+                    )}
+                </AnimatePresence>
             </div>
         </nav>
     );

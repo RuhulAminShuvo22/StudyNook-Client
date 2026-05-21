@@ -1,7 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { HiOutlineShieldCheck, HiOutlineAdjustments, HiOutlineClock } from "react-icons/hi2";
+import { HiOutlineShieldCheck, HiOutlineAdjustmentsVertical, HiOutlineClock } from "react-icons/hi2";
 import { LuLayoutDashboard } from "react-icons/lu";
 import { FiArrowUpRight } from "react-icons/fi";
 
@@ -23,7 +23,7 @@ const WhyChooseUs = () => {
             description: "Dedicated dashboards for every user to seamlessly host and list rooms or track, modify, and manage current bookings.",
         },
         {
-            icon: <HiOutlineAdjustments className="text-3xl text-indigo-500 group-hover:text-white transition-colors duration-300" />,
+            icon: <HiOutlineAdjustmentsVertical className="text-3xl text-indigo-500 group-hover:text-white transition-colors duration-300" />,
             title: "Smart Discovery Filter",
             description: "Instantly browse, look up, and isolate rooms based on real-time availability, library locations, and custom time frames.",
         }
@@ -34,7 +34,7 @@ const WhyChooseUs = () => {
         hidden: { opacity: 0 },
         visible: {
             opacity: 1,
-            transition: { staggerChildren: 0.15 } // একটির পর একটি কার্ড আসবে
+            transition: { staggerChildren: 0.15 }
         }
     };
 
@@ -86,10 +86,9 @@ const WhyChooseUs = () => {
                         <motion.div 
                             key={idx} 
                             variants={cardVariants}
-                            whileHover={{ y: -6, scale: 1.01 }} // হোভার করলে কার্ড সামান্য উপরে উঠবে
+                            whileHover={{ y: -6, scale: 1.01 }}
                             className="group bg-white p-8 md:p-10 rounded-2xl border border-slate-200/60 shadow-sm hover:shadow-xl hover:border-slate-300/50 transition-all duration-300 flex flex-col sm:flex-row items-start gap-6 relative overflow-hidden cursor-pointer"
                         >
-                            {/* Card Hover Corner Gradient Effect */}
                             <div className="absolute top-0 right-0 w-24 h-24 bg-gradient-to-br from-slate-100 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
 
                             {/* Animated Icon Container */}
