@@ -3,7 +3,7 @@ import { CalendarDays, ShieldCheck, DoorOpen, Users, ArrowRight } from "lucide-r
 
 const Banner = () => {
   return (
-    <div className="bg-[linear-gradient(rgba(15,23,42,0.45),rgba(15,23,42,0.65)),url('/assets/banner.png')] bg-cover bg-center text-white flex justify-between flex-col items-center min-h-[550px] md:h-[600px] relative w-full pt-16">
+    <div className="bg-[linear-gradient(rgba(15,23,42,0.45),rgba(15,23,42,0.65)),url('/assets/Banner.png')] bg-cover bg-center text-white flex justify-between flex-col items-center min-h-[550px] md:h-[600px] relative w-full pt-16">
       
       {/* Ambient Gradient Glow In Hero Background */}
       <div className="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[300px] md:w-[500px] h-[300px] bg-cyan-500/10 rounded-full blur-3xl pointer-events-none" />
