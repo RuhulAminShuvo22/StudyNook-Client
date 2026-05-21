@@ -70,19 +70,19 @@ const Navbar = () => {
                                 href="/add-room"
                                 className="flex items-center gap-1 hover:text-sky-500 transition-colors"
                             >
-                                
+
                                 Add Room
                             </Link>
                         </li>
                     </ul>
 
-                    
-                    
+
+
 
                     {/* Right Menu - Desktop */}
                     <ul className="hidden md:flex items-center gap-6 lg:gap-8 text-sm font-medium text-gray-700">
 
-                        
+
 
                         <li>
                             <Link
@@ -129,10 +129,10 @@ const Navbar = () => {
 
                             <li>
                                 <Link
-                                    href="/destinations"
-                                    className="block hover:text-sky-500"
+                                    href="/rooms"
+                                    className="hover:text-sky-500 transition-colors"
                                 >
-                                    Destinations
+                                    Rooms
                                 </Link>
                             </li>
 
@@ -147,20 +147,20 @@ const Navbar = () => {
 
                             <li>
                                 <Link
-                                    href="/admin"
-                                    className="block hover:text-sky-500"
+                                    href="/my-listings"
+                                    className="hover:text-sky-500 transition-colors"
                                 >
-                                    Admin
+                                    My Listings
                                 </Link>
                             </li>
 
                             <li>
                                 <Link
-                                    href="/profile"
-                                    className="flex items-center gap-2 hover:text-sky-500"
+                                    href="/add-room"
+                                    className="flex items-center gap-1 hover:text-sky-500 transition-colors"
                                 >
-                                    <User size={16} />
-                                    Profile
+
+                                    Add Room
                                 </Link>
                             </li>
 
@@ -174,13 +174,13 @@ const Navbar = () => {
                             </li>
 
                             <li>
-                                <Link
-                                    href="/signup"
-                                    className="inline-block bg-sky-500 text-white px-4 py-2 rounded-md hover:bg-sky-600 transition-colors"
-                                >
-                                    Sign Up
-                                </Link>
-                            </li>
+                            <Link
+                                href="/register"
+                                className="block hover:text-sky-500"
+                            >
+                                Register
+                            </Link>
+                        </li>
 
                         </ul>
                     </div>
