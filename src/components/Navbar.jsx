@@ -67,7 +67,7 @@ const Navbar = () => {
                         </Link>
                     </motion.div>
 
-                    {/* 🎯 মিডল মেনু - স্লিক ফলোয়ার ক্যাপসুল অ্যানিমেশন */}
+                    {/* 🎯 মিডল মেনু - স্লিক ফলোয়ার ক্যাপসুল অ্যানিমেশন (ট্যাবলেট ও ডেক্সটপের জন্য) */}
                     <ul 
                         className="hidden md:flex items-center gap-1 text-[13.5px] font-semibold text-slate-600 relative"
                         onMouseLeave={() => setHoveredIndex(null)}
@@ -100,7 +100,7 @@ const Navbar = () => {
                         ))}
                     </ul>
 
-                    {/* ⚡ রাইট মেনু - প্রিমিয়াম গ্রেডিয়েন্ট বাটন লেআউট */}
+                    {/* ⚡ রাইট মেনু - প্রিমিয়াম গ্রেডিয়েন্ট বাটন লেআউট (ট্যাবলেট ও ডেক্সটপের জন্য) */}
                     <div className="hidden md:flex items-center gap-4 text-[13.5px] font-semibold">
                         <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.97 }}>
                             <Link
@@ -125,7 +125,7 @@ const Navbar = () => {
                         </motion.div>
                     </div>
 
-                    {/* মোবাইল মেনু টগল */}
+                    {/* মোবাইল মেনু টগল বাটন (শুধুমাত্র ছোট স্ক্রিনে দেখা যাবে) */}
                     <motion.button
                         whileTap={{ scale: 0.9 }}
                         onClick={() => setIsOpen(!isOpen)}
@@ -135,7 +135,7 @@ const Navbar = () => {
                     </motion.button>
                 </div>
 
-                {/* মোবাইল ড্রপডাউন */}
+                {/* 📱 মোবাইল ড্রপডাউন মেনু (মোবাইল ও ছোট ট্যাবলেটের জন্য রেসপনসিভ ভিউ) */}
                 <AnimatePresence>
                     {isOpen && (
                         <motion.div 
@@ -146,36 +146,36 @@ const Navbar = () => {
                             className="md:hidden overflow-hidden border-t border-slate-100"
                         >
                             <ul className="flex flex-col gap-1 py-3 text-sm font-semibold text-slate-700">
-                                {menuLinks.map((link, i) => (
-                                    <motion.li 
-                                        key={link.href}
-                                        initial={{ opacity: 0, x: -15 }}
-                                        animate={{ opacity: 1, x: 0 }}
-                                        transition={{ delay: i * 0.04 }}
-                                    >
+                                {menuLinks.map((link) => (
+                                    <li key={link.href}>
                                         <Link
                                             href={link.href}
                                             onClick={() => setIsOpen(false)}
-                                            className="block py-2 px-3 rounded-lg hover:bg-slate-50 hover:text-cyan-600 transition-all"
+                                            className="block px-4 py-2.5 rounded-xl hover:bg-slate-50 text-slate-600 hover:text-cyan-600 transition-all duration-200"
                                         >
                                             {link.name}
                                         </Link>
-                                    </motion.li>
+                                    </li>
                                 ))}
-
-                                <div className="h-[1px] bg-slate-100 my-1.5 mx-3" />
-
-                                <motion.li initial={{ opacity: 0, x: -15 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: menuLinks.length * 0.04 }} className="px-3">
-                                    <Link href="/login" onClick={() => setIsOpen(false)} className="block text-center py-2 rounded-lg border border-slate-200 hover:bg-slate-50">
+                                
+                                {/* মোবাইল ভিউ-র জন্য বাটন দুটি নিচে যোগ করা হলো */}
+                                <div className="grid grid-cols-2 gap-2 pt-3 px-4 border-t border-slate-100/60">
+                                    <Link
+                                        href="/login"
+                                        onClick={() => setIsOpen(false)}
+                                        className="text-center py-2.5 rounded-xl text-slate-600 hover:bg-slate-50 font-bold transition-all"
+                                    >
                                         Login
                                     </Link>
-                                </motion.li>
-
-                                <motion.li initial={{ opacity: 0, x: -15 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: (menuLinks.length + 1) * 0.04 }} className="px-3 pt-1">
-                                    <Link href="/register" onClick={() => setIsOpen(false)} className="block text-center bg-gradient-to-r from-cyan-500 to-emerald-500 text-white font-bold py-2 rounded-full flex items-center justify-center gap-1">
-                                        Register <FiArrowUpRight size={14} />
+                                    <Link
+                                        href="/register"
+                                        onClick={() => setIsOpen(false)}
+                                        className="text-center py-2.5 rounded-xl bg-gradient-to-r from-cyan-500 to-emerald-500 text-white font-bold transition-all flex items-center justify-center gap-1 text-xs"
+                                    >
+                                        Register
+                                        <FiArrowUpRight size={14} />
                                     </Link>
-                                </motion.li>
+                                </div>
                             </ul>
                         </motion.div>
                     )}
