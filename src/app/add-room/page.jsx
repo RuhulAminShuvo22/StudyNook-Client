@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { motion } from "framer-motion";
+import toast from "react-hot-toast";
 
 import {
     FiPlusCircle,
@@ -25,6 +26,9 @@ const AddRoomPage = () => {
 
     // Amenities State
     const [selectedAmenities, setSelectedAmenities] = useState([]);
+
+    // Loading State
+    const [loading, setLoading] = useState(false);
 
     // Amenities Options
     const amenityOptions = [
@@ -61,6 +65,8 @@ const AddRoomPage = () => {
 
         e.preventDefault();
 
+        setLoading(true);
+
         const formData = new FormData(e.target);
 
         const roomData = {
@@ -96,18 +102,59 @@ const AddRoomPage = () => {
 
             if (data.insertedId) {
 
-                alert("🎉 Study Space Added Successfully!");
+                toast.success(
+                    "🎉 Study Space Added Successfully!",
+                    {
+                        duration: 4000,
+                        style: {
+                            borderRadius: "12px",
+                            background: "#0f172a",
+                            color: "#fff",
+                            padding: "14px 18px"
+                        }
+                    }
+                );
 
                 e.target.reset();
 
                 setSelectedAmenities([]);
+
+            } else {
+
+                toast.error(
+                    "❌ Failed To Add Room",
+                    {
+                        duration: 4000,
+                        style: {
+                            borderRadius: "12px",
+                            background: "#7f1d1d",
+                            color: "#fff",
+                            padding: "14px 18px"
+                        }
+                    }
+                );
             }
 
         } catch (error) {
 
             console.error("Error:", error);
 
-            alert("❌ Failed To Add Room");
+            toast.error(
+                "❌ Failed To Add Room",
+                {
+                    duration: 4000,
+                    style: {
+                        borderRadius: "12px",
+                        background: "#7f1d1d",
+                        color: "#fff",
+                        padding: "14px 18px"
+                    }
+                }
+            );
+
+        } finally {
+
+            setLoading(false);
         }
     };
 
@@ -375,17 +422,19 @@ const AddRoomPage = () => {
                                                 onClick={() =>
                                                     handleAmenityChange(option)
                                                 }
-                                                className={`flex items-center gap-3 p-4 rounded-xl border cursor-pointer transition-all duration-200 ${isChecked
+                                                className={`flex items-center gap-3 p-4 rounded-xl border cursor-pointer transition-all duration-200 ${
+                                                    isChecked
                                                         ? "border-cyan-500 bg-cyan-50"
                                                         : "border-slate-200 bg-white"
-                                                    }`}
+                                                }`}
                                             >
 
                                                 <div
-                                                    className={`w-4 h-4 rounded-full border flex items-center justify-center ${isChecked
+                                                    className={`w-4 h-4 rounded-full border flex items-center justify-center ${
+                                                        isChecked
                                                             ? "bg-cyan-500 border-cyan-500"
                                                             : "border-slate-300"
-                                                        }`}
+                                                    }`}
                                                 >
 
                                                     {isChecked && (
@@ -395,10 +444,11 @@ const AddRoomPage = () => {
                                                 </div>
 
                                                 <span
-                                                    className={`text-sm font-medium ${isChecked
+                                                    className={`text-sm font-medium ${
+                                                        isChecked
                                                             ? "text-cyan-700"
                                                             : "text-slate-700"
-                                                        }`}
+                                                    }`}
                                                 >
                                                     {option}
                                                 </span>
@@ -427,10 +477,13 @@ const AddRoomPage = () => {
 
                                 <Button
                                     type="submit"
+                                    isDisabled={loading}
                                     className="w-full bg-gradient-to-r from-cyan-500 to-emerald-500 text-white font-bold py-4 rounded-xl"
                                 >
 
-                                    PUBLISH STUDY SPACE
+                                    {loading
+                                        ? "Publishing..."
+                                        : "PUBLISH STUDY SPACE"}
 
                                 </Button>
 
