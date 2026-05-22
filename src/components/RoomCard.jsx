@@ -1,11 +1,13 @@
 import { FaExternalLinkAlt } from "react-icons/fa";
-import { FiGrid, FiUsers, FiClock } from "react-icons/fi";
+import { FiGrid, FiUsers } from "react-icons/fi";
 import { Button } from "@heroui/react";
 import Image from "next/image";
 import Link from "next/link";
 
 const RoomCard = ({ room }) => {
-    // Data Destructuring
+    // Safety check jodi database errors data pathate miss kore
+    if (!room) return null;
+
     const { 
         _id, 
         roomName, 
@@ -18,22 +20,26 @@ const RoomCard = ({ room }) => {
         status 
     } = room;
 
+    // Fallback images path configuration
+    const defaultImage = "https://unsplash.com";
+
     return (
-        <div className="group border border-slate-200/80 rounded-2xl overflow-hidden bg-white hover:shadow-xl hover:border-cyan-200/50 transition-all duration-300 flex flex-col h-full w-full">
+        <div className="group border border-slate-200/80 rounded-2xl overflow-hidden bg-white hover:shadow-xl hover:border-cyan-200/50 transition-all duration-300 flex flex-col h-full w-full relative z-10">
             
             {/* Image Section */}
             <div className="relative w-full h-[200px] sm:h-[220px] overflow-hidden bg-slate-100 flex-shrink-0">
                 <Image
                     className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                     alt={roomName || "Study Room"}
-                    src={imageUrl || "https://unsplash.com"}
-                    height={400}
+                    src={imageUrl && imageUrl.startsWith('http') ? imageUrl : defaultImage}
+                    height={300}
                     width={400}
-                    sizes="(max-w-768px) 100vw, (max-w-1200px) 50vw, 33vw"
+                    priority={false}
+                    unoptimized={true} // Pixabay dynamic error bypass korar jonne production fix
                 />
                 
                 {/* Status Badge */}
-                <div className="absolute top-3 right-3 z-10">
+                <div className="absolute top-3 right-3 z-20">
                     <span className={`text-[11px] font-bold px-3 py-1 rounded-full border shadow-sm backdrop-blur-sm ${
                         status === "available" 
                         ? "bg-emerald-500/10 text-emerald-700 border-emerald-200/60" 
@@ -67,7 +73,7 @@ const RoomCard = ({ room }) => {
                         {description}
                     </p>
 
-                    {/* Core Features Specs (Grid, Users) */}
+                    {/* Core Features Specs */}
                     <div className="grid grid-cols-2 gap-2 text-xs font-semibold text-slate-600 bg-slate-50 border border-slate-100 p-2.5 rounded-xl">
                         <div className="flex items-center gap-2 min-w-0">
                             <FiGrid className="text-cyan-500 flex-shrink-0" size={14} />
@@ -98,14 +104,14 @@ const RoomCard = ({ room }) => {
                 </div>
 
                 {/* Booking Redirection CTA */}
-                <div className="pt-2 flex-shrink-0">
-                    <Link href={`/rooms/${_id}`} className="w-full block">
+                <div className="pt-2 flex-shrink-0 relative z-30">
+                    <Link href={`/rooms/${_id}`} className="w-full block" prefetch={false}>
                         <Button 
-                            variant="flat" 
-                            className="w-full font-bold bg-slate-100 group-hover:bg-cyan-600 group-hover:text-white text-slate-700 gap-2 rounded-xl py-5 transition-all duration-300"
+                            type="button"
+                            className="w-full font-bold bg-slate-100 text-slate-700 gap-2 rounded-xl py-5 border border-slate-200 group-hover:bg-cyan-600 group-hover:text-white group-hover:border-cyan-600 transition-all duration-300"
                         >
                             <FaExternalLinkAlt size={12} />
-                            Book Workspace
+                            View Details
                         </Button>
                     </Link>
                 </div>
