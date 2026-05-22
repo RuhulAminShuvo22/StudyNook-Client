@@ -4,6 +4,8 @@ import { useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
 import Image from "next/image";
 
+import toast from "react-hot-toast";
+
 import {
   FiArrowLeft,
   FiMapPin,
@@ -31,10 +33,14 @@ const UpdateRoomPage = () => {
         setRoom(data);
       } catch (error) {
         console.error(error);
+
+        toast.error("❌ Failed to load room");
       }
     };
 
-    fetchRoom();
+    if (id) {
+      fetchRoom();
+    }
   }, [id]);
 
   // 🔥 UPDATE ROOM
@@ -51,11 +57,17 @@ const UpdateRoomPage = () => {
       capacity: Number(form.capacity.value),
       hourlyRate: Number(form.hourlyRate.value),
 
+      // 🔥 KEEP OLD DATA
       amenities: room?.amenities || [],
       bookingCount: room?.bookingCount || 0,
       ownerName: room?.ownerName || "",
       ownerEmail: room?.ownerEmail || "",
     };
+
+    // 🔥 LOADING TOAST
+    const toastId = toast.loading(
+      "Updating your premium study room..."
+    );
 
     try {
       const res = await fetch(`http://localhost:5000/rooms/${id}`, {
@@ -68,27 +80,58 @@ const UpdateRoomPage = () => {
 
       const data = await res.json();
 
+      // 🔥 SUCCESS
       if (data.success) {
-        alert("✅ Room Updated Successfully");
+        toast.success(
+          "✨ Room updated successfully!",
+          {
+            id: toastId,
+          }
+        );
 
-        router.push(`/rooms/${id}`);
+        // 🔥 UPDATE LOCAL UI
+        setRoom({
+          ...room,
+          ...updatedRoom,
+        });
+
+        // 🔥 REDIRECT
+        setTimeout(() => {
+          router.push(`/rooms/${id}`);
+        }, 1200);
+
+      } else {
+        toast.error(
+          "❌ Failed to update room",
+          {
+            id: toastId,
+          }
+        );
       }
+
     } catch (error) {
       console.error(error);
+
+      toast.error(
+        "🚨 Something went wrong",
+        {
+          id: toastId,
+        }
+      );
     }
   };
 
   // 🔥 LOADING
   if (!room) {
     return (
-      <div className="min-h-screen flex items-center justify-center">
-        Loading...
+      <div className="min-h-screen flex items-center justify-center bg-[#ecfeff]">
+        <div className="w-14 h-14 border-4 border-emerald-500 border-t-transparent rounded-full animate-spin"></div>
       </div>
     );
   }
 
   return (
-    <div className="relative min-h-screen bg-[#f7f4ef] overflow-hidden">
+    <div className="relative min-h-screen bg-[#ecfeff] overflow-hidden">
 
       {/* 🔥 BACKGROUND ROOM DETAILS */}
       <div className="blur-sm opacity-40 pointer-events-none">
@@ -96,7 +139,8 @@ const UpdateRoomPage = () => {
         <main className="min-h-screen py-24 px-4">
           <div className="max-w-6xl mx-auto">
 
-            <button className="flex items-center gap-2 text-[#1e5b4f] font-semibold mb-8">
+            {/* BACK */}
+            <button className="flex items-center gap-2 text-emerald-700 font-semibold mb-8">
               <FiArrowLeft />
               Back
             </button>
@@ -107,9 +151,12 @@ const UpdateRoomPage = () => {
               <div className="lg:col-span-2">
 
                 {/* IMAGE */}
-                <div className="relative w-full h-[250px] md:h-[500px] rounded-3xl overflow-hidden">
+                <div className="relative w-full h-[250px] md:h-[500px] rounded-3xl overflow-hidden shadow-xl">
                   <Image
-                    src={room.imageUrl}
+                    src={
+                      room.imageUrl ||
+                      "https://images.unsplash.com/photo-1524995997946-a1c2e315a42f"
+                    }
                     alt={room.roomName}
                     fill
                     className="object-cover"
@@ -121,7 +168,7 @@ const UpdateRoomPage = () => {
                 <div className="mt-8">
 
                   <div className="flex items-center justify-between flex-wrap gap-4">
-                    <h1 className="text-4xl font-black text-[#173d35]">
+                    <h1 className="text-4xl font-black text-emerald-950">
                       {room.roomName}
                     </h1>
 
@@ -130,11 +177,13 @@ const UpdateRoomPage = () => {
                     </div>
                   </div>
 
+                  {/* DATE */}
                   <div className="flex items-center gap-2 text-slate-500 mt-2 text-sm">
                     <FiCalendar />
                     Listed May 22, 2026
                   </div>
 
+                  {/* DESCRIPTION */}
                   <p className="mt-8 text-slate-700 leading-relaxed text-lg">
                     {room.description}
                   </p>
@@ -144,10 +193,11 @@ const UpdateRoomPage = () => {
               {/* RIGHT */}
               <div>
 
-                <div className="bg-white border border-[#e8ddd0] rounded-3xl p-6 shadow-sm">
+                <div className="bg-white/80 backdrop-blur-xl border border-emerald-100 rounded-3xl p-6 shadow-lg">
 
+                  {/* PRICE */}
                   <div className="mb-8">
-                    <h2 className="text-5xl font-black text-[#1e5b4f]">
+                    <h2 className="text-5xl font-black text-emerald-700">
                       ${room.hourlyRate}
                     </h2>
 
@@ -156,6 +206,7 @@ const UpdateRoomPage = () => {
                     </p>
                   </div>
 
+                  {/* INFO */}
                   <div className="space-y-5">
 
                     <div className="flex items-center gap-3 text-slate-700">
@@ -182,10 +233,10 @@ const UpdateRoomPage = () => {
         </main>
       </div>
 
-      {/* 🔥 MODAL */}
+      {/* 🔥 UPDATE MODAL */}
       <div className="fixed inset-0 z-50 flex items-center justify-center px-4">
 
-        <div className="relative w-full max-w-2xl bg-[#f7f4ef] rounded-3xl shadow-2xl p-6 md:p-8 overflow-y-auto max-h-[95vh] border border-[#e8ddd0]">
+        <div className="relative w-full max-w-2xl bg-white/85 backdrop-blur-2xl rounded-3xl shadow-2xl p-6 md:p-8 overflow-y-auto max-h-[95vh] border border-emerald-100">
 
           {/* CLOSE */}
           <button
@@ -197,7 +248,7 @@ const UpdateRoomPage = () => {
 
           {/* TITLE */}
           <div className="mb-8">
-            <h2 className="text-3xl font-black text-[#173d35]">
+            <h2 className="text-3xl font-black text-emerald-950">
               Edit Room
             </h2>
 
@@ -214,7 +265,7 @@ const UpdateRoomPage = () => {
 
             {/* ROOM NAME */}
             <div>
-              <label className="block text-sm font-semibold mb-2">
+              <label className="block text-sm font-semibold mb-2 text-slate-700">
                 Room Name
               </label>
 
@@ -222,13 +273,13 @@ const UpdateRoomPage = () => {
                 type="text"
                 name="roomName"
                 defaultValue={room.roomName}
-                className="w-full border border-[#d8cdbf] rounded-2xl px-4 py-3 outline-none focus:border-[#1e5b4f]"
+                className="w-full border border-cyan-100 bg-cyan-50/50 rounded-2xl px-4 py-3 outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-200 transition-all"
               />
             </div>
 
             {/* DESCRIPTION */}
             <div>
-              <label className="block text-sm font-semibold mb-2">
+              <label className="block text-sm font-semibold mb-2 text-slate-700">
                 Description
               </label>
 
@@ -236,13 +287,13 @@ const UpdateRoomPage = () => {
                 name="description"
                 rows={4}
                 defaultValue={room.description}
-                className="w-full border border-[#d8cdbf] rounded-2xl px-4 py-3 outline-none focus:border-[#1e5b4f]"
+                className="w-full border border-cyan-100 bg-cyan-50/50 rounded-2xl px-4 py-3 outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-200 transition-all"
               />
             </div>
 
             {/* IMAGE URL */}
             <div>
-              <label className="block text-sm font-semibold mb-2">
+              <label className="block text-sm font-semibold mb-2 text-slate-700">
                 Image URL
               </label>
 
@@ -250,14 +301,17 @@ const UpdateRoomPage = () => {
                 type="text"
                 name="imageUrl"
                 defaultValue={room.imageUrl}
-                className="w-full border border-[#d8cdbf] rounded-2xl px-4 py-3 outline-none focus:border-[#1e5b4f]"
+                className="w-full border border-cyan-100 bg-cyan-50/50 rounded-2xl px-4 py-3 outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-200 transition-all"
               />
             </div>
 
             {/* PREVIEW IMAGE */}
-            <div className="relative w-full h-[250px] rounded-3xl overflow-hidden">
+            <div className="relative w-full h-[250px] rounded-3xl overflow-hidden shadow-lg">
               <Image
-                src={room.imageUrl}
+                src={
+                  room.imageUrl ||
+                  "https://images.unsplash.com/photo-1524995997946-a1c2e315a42f"
+                }
                 alt="Preview"
                 fill
                 className="object-cover"
@@ -268,8 +322,9 @@ const UpdateRoomPage = () => {
             {/* FLOOR + CAPACITY + RATE */}
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
 
+              {/* FLOOR */}
               <div>
-                <label className="block text-sm font-semibold mb-2">
+                <label className="block text-sm font-semibold mb-2 text-slate-700">
                   Floor
                 </label>
 
@@ -277,12 +332,13 @@ const UpdateRoomPage = () => {
                   type="text"
                   name="floor"
                   defaultValue={room.floor}
-                  className="w-full border border-[#d8cdbf] rounded-2xl px-4 py-3"
+                  className="w-full border border-cyan-100 bg-cyan-50/50 rounded-2xl px-4 py-3 outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-200 transition-all"
                 />
               </div>
 
+              {/* CAPACITY */}
               <div>
-                <label className="block text-sm font-semibold mb-2">
+                <label className="block text-sm font-semibold mb-2 text-slate-700">
                   Capacity
                 </label>
 
@@ -290,12 +346,13 @@ const UpdateRoomPage = () => {
                   type="number"
                   name="capacity"
                   defaultValue={room.capacity}
-                  className="w-full border border-[#d8cdbf] rounded-2xl px-4 py-3"
+                  className="w-full border border-cyan-100 bg-cyan-50/50 rounded-2xl px-4 py-3 outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-200 transition-all"
                 />
               </div>
 
+              {/* RATE */}
               <div>
-                <label className="block text-sm font-semibold mb-2">
+                <label className="block text-sm font-semibold mb-2 text-slate-700">
                   Hourly Rate ($)
                 </label>
 
@@ -303,15 +360,15 @@ const UpdateRoomPage = () => {
                   type="number"
                   name="hourlyRate"
                   defaultValue={room.hourlyRate}
-                  className="w-full border border-[#d8cdbf] rounded-2xl px-4 py-3"
+                  className="w-full border border-cyan-100 bg-cyan-50/50 rounded-2xl px-4 py-3 outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-200 transition-all"
                 />
               </div>
             </div>
 
-            {/* BUTTON */}
+            {/* SAVE BUTTON */}
             <button
               type="submit"
-              className="w-full bg-[#1e5b4f] hover:bg-[#17473d] text-white font-bold py-4 rounded-2xl transition-all"
+              className="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-4 rounded-2xl transition-all shadow-lg hover:shadow-emerald-200"
             >
               Save Changes
             </button>

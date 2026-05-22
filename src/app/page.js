@@ -1,3 +1,4 @@
+import AvailableStudyRooms from "@/components/AvailableStudyRooms";
 import Banner from "@/components/Banner";
 import HowItWorks from "@/components/HowItWorks";
 import StudyNookCTA from "@/components/StudyNookCTA";
@@ -9,7 +10,7 @@ export default function Home() {
   return (
     <div >
       <Banner></Banner>
-    {/* feature section up coming */}
+      <AvailableStudyRooms></AvailableStudyRooms>
       <WhyChooseUs></WhyChooseUs>
       <HowItWorks></HowItWorks>
       <Testimonials></Testimonials>
