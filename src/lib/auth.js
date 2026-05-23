@@ -1,5 +1,29 @@
 
 
+// import dns from "node:dns";
+// dns.setServers(["8.8.8.8", "8.8.4.4"]);
+
+// import { betterAuth } from "better-auth";
+// import { MongoClient } from "mongodb";
+// import { mongodbAdapter } from "better-auth/adapters/mongodb";
+
+// const client = new MongoClient(process.env.MONGODB_URI);
+
+// // 🔥 IMPORTANT
+// await client.connect();
+
+// const db = client.db("studynook");
+
+// export const auth = betterAuth({
+//   database: mongodbAdapter(db, {
+//     client,
+//   }),
+
+//   emailAndPassword: {
+//     enabled: true,
+//   },
+// });
+
 import dns from "node:dns";
 dns.setServers(["8.8.8.8", "8.8.4.4"]);
 
@@ -9,17 +33,21 @@ import { mongodbAdapter } from "better-auth/adapters/mongodb";
 
 const client = new MongoClient(process.env.MONGODB_URI);
 
-// 🔥 IMPORTANT
+// ✅ connect once
 await client.connect();
 
 const db = client.db("studynook");
 
 export const auth = betterAuth({
-  database: mongodbAdapter(db, {
-    client,
-  }),
+  database: mongodbAdapter(db),
 
   emailAndPassword: {
     enabled: true,
   },
+
+  trustedOrigins: ["http://localhost:3000"],
+
+  secret: process.env.BETTER_AUTH_SECRET,
+
+  baseURL: process.env.BETTER_AUTH_URL,
 });

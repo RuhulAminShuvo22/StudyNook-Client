@@ -5,6 +5,7 @@ import Link from "next/link";
 import { Button } from "@heroui/react";
 import { FcGoogle } from "react-icons/fc";
 import toast, { Toaster } from "react-hot-toast";
+import { authClient } from "@/lib/auth-client";
 
 const formVariants = {
   hidden: { opacity: 0, y: 40 },
@@ -23,9 +24,16 @@ const itemVariants = {
 
 const LoginPage = () => {
 
-  const handleLogin = (e) => {
+  const handleLogin = async (e) => {
     e.preventDefault();
     const formData = new FormData(e.target);
+    const user = Object.fromEntries(formData.entries());
+
+    const {data , error } = await authClient.signIn.email({
+      email: user.email,
+      password: user.password,
+    });
+    console.log({ data, error })
     
     toast.success(`Welcome back to StudyNook! 🚀`, {
       style: { border: '1px solid #10B981', padding: '16px', color: '#1E293B', fontWeight: '600' },
@@ -93,9 +101,7 @@ const LoginPage = () => {
               <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider">
                 Password
               </label>
-              <Link href="/forgot-password" className="text-xs text-emerald-600 hover:underline font-semibold transition-all">
-                Forgot password?
-              </Link>
+              
             </div>
             <input 
               type="password" 
