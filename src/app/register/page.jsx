@@ -5,6 +5,8 @@ import Link from "next/link";
 import { Button } from "@heroui/react";
 import { FcGoogle } from "react-icons/fc";
 import toast, { Toaster } from "react-hot-toast";
+//import { object } from "better-auth";
+import { authClient } from "@/lib/auth-client";
 
 // ফর্ম কার্ডের এন্ট্রেন্স অ্যানিমেশন
 const formVariants = {
@@ -33,24 +35,48 @@ const bubbleVariants = {
 
 const RegisterPage = () => {
 
-  const handleRegister = (e) => {
+  const handleRegister = async (e) => {
     e.preventDefault();
     const formData = new FormData(e.target);
+
+    const user = Object.fromEntries(formData.entries());
+
     const name = formData.get("name");
     const password = formData.get("password");
 
+    // ১. পাসওয়ার্ড ভ্যালিডেশন (সবার আগে চেক করতে হবে)
     if (password.length < 6) {
       toast.error("Password must be at least 6 characters long!", {
+        style: { border: '1px solid #EF4444', padding: '16px', color: '#1E293B', fontWeight: '600' },
+      });
+      return; // এখানেই কোড এক্সিকিউশন থেমে যাবে, নিচে নামবে না
+    }
+
+    // ২. Better Auth ক্লায়েন্ট কল (name সহ)
+    const { data, error } = await authClient.signUp.email({
+      email: user.email,
+      password: user.password,
+      name: user.name,       // 🟢 এটি বাদ পড়েছিল, এখন যুক্ত করা হয়েছে
+      image: user.photoUrl,  // আপনার ফর্মের photoUrl কে image হিসেবে পাঠানো হচ্ছে
+    });
+
+    console.log({ data, error });
+
+    // ৩. রেসপন্স অনুযায়ী টোস্ট মেসেজ দেখানো
+    if (error) {
+      toast.error(error.message || "Registration failed!", {
         style: { border: '1px solid #EF4444', padding: '16px', color: '#1E293B', fontWeight: '600' },
       });
       return;
     }
 
+    // সফল হলে সাকসেস টোস্ট
     toast.success(`Welcome to StudyNook, ${name}! 🎉`, {
       style: { border: '1px solid #10B981', padding: '16px', color: '#1E293B', fontWeight: '600' },
       iconTheme: { primary: '#059669', secondary: '#FFF' },
     });
   };
+
 
   const handleGoogleLogin = () => {
     toast.loading("Connecting with Google...", { id: "google-auth" });
