@@ -6,12 +6,12 @@ import Image from "next/image";
 import { motion } from "framer-motion";
 import toast from "react-hot-toast";
 
+import DeleteRoomButton from "@/components/DeleteRoomButton";
+
 import {
-  //FiArrowLeft,
   FiMapPin,
   FiUsers,
   FiEdit,
-  FiTrash2,
   FiBookmark,
   FiCalendar,
   FiStar,
@@ -54,58 +54,6 @@ const RoomDetailsPage = () => {
 
     fetchRoom();
   }, [id]);
-
-  // 🔥 DELETE ROOM WITH HOT TOAST
-  const handleDeleteRoom = async () => {
-    const confirmDelete = window.confirm(
-      "Are you sure you want to delete this room?"
-    );
-
-    // ❌ Cancel Toast
-    if (!confirmDelete) {
-      toast("Delete cancelled ❌");
-      return;
-    }
-
-    // 🔥 Loading Toast
-    const toastId = toast.loading("Deleting room...");
-
-    try {
-      const res = await fetch(`http://localhost:5000/rooms/${id}`, {
-        method: "DELETE",
-      });
-
-      const data = await res.json();
-
-      if (data.deletedCount > 0) {
-
-        // ✅ Success Toast
-        toast.success("Room deleted successfully 🗑️", {
-          id: toastId,
-          duration: 3000,
-        });
-
-        // ছোট delay দিলে toast দেখা যাবে
-        setTimeout(() => {
-          router.push("/rooms");
-        }, 1200);
-
-      } else {
-
-        // ❌ Failed Toast
-        toast.error("Failed to delete room ❌", {
-          id: toastId,
-        });
-      }
-    } catch (error) {
-      console.error(error);
-
-      // 🚨 Error Toast
-      toast.error("Something went wrong 🚨", {
-        id: toastId,
-      });
-    }
-  };
 
   // 🔥 LOADING
   if (loading) {
@@ -327,13 +275,7 @@ const RoomDetailsPage = () => {
                 </button>
 
                 {/* DELETE BUTTON */}
-                <button
-                  onClick={handleDeleteRoom}
-                  className="border border-red-200 bg-red-50 hover:bg-red-100 text-red-500 py-3 rounded-2xl font-bold flex items-center justify-center gap-2 transition-all duration-300 hover:scale-105"
-                >
-                  <FiTrash2 />
-                  Delete
-                </button>
+                <DeleteRoomButton roomId={room._id} />
               </div>
             </div>
 
