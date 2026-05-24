@@ -12,8 +12,14 @@ import {
   FiX,
   FiArrowUpRight,
 } from "react-icons/fi";
+import { authClient } from "@/lib/auth-client";
 
 const Navbar = () => {
+
+  const {
+    data: session,
+  } = authClient.useSession()
+  console.log(session)
 
   const [isOpen, setIsOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
@@ -46,11 +52,10 @@ const Navbar = () => {
   return (
 
     <nav
-      className={`sticky top-0 z-50 transition-all duration-300 ${
-        isScrolled
+      className={`sticky top-0 z-50 transition-all duration-300 ${isScrolled
           ? "bg-white/80 backdrop-blur-xl border-b border-slate-200/50 shadow-[0_2px_15px_-10px_rgba(0,0,0,0.04)] py-1"
           : "bg-white border-b border-slate-100 py-2.5"
-      }`}
+        }`}
     >
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -115,11 +120,10 @@ const Navbar = () => {
                   onMouseEnter={() =>
                     setHoveredIndex(index)
                   }
-                  className={`relative z-10 px-3 py-1.5 rounded-full block transition-colors duration-200 tracking-wide ${
-                    hoveredIndex === index
+                  className={`relative z-10 px-3 py-1.5 rounded-full block transition-colors duration-200 tracking-wide ${hoveredIndex === index
                       ? "text-cyan-600"
                       : "text-slate-600"
-                  }`}
+                    }`}
                 >
 
                   {link.name}
