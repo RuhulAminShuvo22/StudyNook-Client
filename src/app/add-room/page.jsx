@@ -1,7 +1,10 @@
 "use client";
 
 import { useState } from "react";
+import { useRouter } from "next/navigation";
+
 import { motion } from "framer-motion";
+
 import toast from "react-hot-toast";
 
 import {
@@ -23,6 +26,8 @@ import {
 } from "@heroui/react";
 
 const AddRoomPage = () => {
+
+    const router = useRouter();
 
     // Amenities State
     const [selectedAmenities, setSelectedAmenities] = useState([]);
@@ -118,6 +123,9 @@ const AddRoomPage = () => {
                 e.target.reset();
 
                 setSelectedAmenities([]);
+
+                // Redirect To Rooms Page
+                router.push("/rooms");
 
             } else {
 
@@ -426,7 +434,7 @@ const AddRoomPage = () => {
                                                     isChecked
                                                         ? "border-cyan-500 bg-cyan-50"
                                                         : "border-slate-200 bg-white"
-                                                }`}
+                                                    }`}
                                             >
 
                                                 <div
@@ -434,7 +442,7 @@ const AddRoomPage = () => {
                                                         isChecked
                                                             ? "bg-cyan-500 border-cyan-500"
                                                             : "border-slate-300"
-                                                    }`}
+                                                        }`}
                                                 >
 
                                                     {isChecked && (
@@ -448,7 +456,7 @@ const AddRoomPage = () => {
                                                         isChecked
                                                             ? "text-cyan-700"
                                                             : "text-slate-700"
-                                                    }`}
+                                                        }`}
                                                 >
                                                     {option}
                                                 </span>
