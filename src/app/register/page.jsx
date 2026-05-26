@@ -140,7 +140,12 @@ const RegisterPage = () => {
     }
   };
 
-  const handleGoogleLogin = () => {
+  const handleGoogleLogin = async () => {
+
+    const data = await authClient.signIn.social({
+      provider: "google",
+    });
+
     toast.loading("Connecting with Google...", {
       id: "google-auth",
     });
