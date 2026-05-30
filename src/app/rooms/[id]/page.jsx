@@ -1,5 +1,4 @@
 
-
 "use client";
 
 import { useEffect, useState } from "react";
@@ -46,8 +45,11 @@ const RoomDetailsPage = () => {
       try {
         setLoading(true);
 
-        const res = await fetch(
-          `http://localhost:5000/rooms/${id}`,
+        const res = await fetch(`http://localhost:5000/rooms/${id}`,{
+          headers: {
+            authorization: "logged in"
+          }
+        },
           {
             cache: "no-store",
           }
