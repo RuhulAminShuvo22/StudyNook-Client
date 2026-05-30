@@ -6,6 +6,10 @@ import Testimonials from "@/components/Testimonials";
 import WhyChooseUs from "@/components/WhyChooseUs";
 import Image from "next/image";
 
+export const metadata = {
+  title: "Home",
+};
+
 export default function Home() {
   return (
     <div >

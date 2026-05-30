@@ -15,7 +15,8 @@ import {
   FiArrowUpRight,
   FiLogOut,
   FiUser,
-  FiGrid,
+  FiBook,
+  FiHome,
 } from "react-icons/fi";
 
 import { authClient } from "@/lib/auth-client";
@@ -58,19 +59,25 @@ const Navbar = () => {
     session?.user?.name?.charAt(0)?.toUpperCase() || "U";
 
   // Menu Links
-  const menuLinks = [
-    { name: "Home", href: "/" },
-    { name: "Rooms", href: "/rooms" },
-    { name: "My Bookings", href: "/my-bookings" },
-    { name: "My Listings", href: "/my-listings" },
-    { name: "Add Room", href: "/add-room" },
-  ];
+  // Menu Links
+  const menuLinks = session
+    ? [
+      { name: "Home", href: "/" },
+      { name: "Rooms", href: "/rooms" },
+      { name: "My Bookings", href: "/my-bookings" },
+      { name: "My Listings", href: "/my-listings" },
+      { name: "Add Room", href: "/add-room" },
+    ]
+    : [
+      { name: "Home", href: "/" },
+      { name: "Rooms", href: "/rooms" },
+    ];
 
   return (
     <nav
       className={`sticky top-0 z-50 transition-all duration-300 ${isScrolled
-          ? "bg-white/80 backdrop-blur-xl border-b border-slate-200/50 shadow-[0_2px_15px_-10px_rgba(0,0,0,0.04)] py-1"
-          : "bg-white border-b border-slate-100 py-2.5"
+        ? "bg-white/80 backdrop-blur-xl border-b border-slate-200/50 shadow-[0_2px_15px_-10px_rgba(0,0,0,0.04)] py-1"
+        : "bg-white border-b border-slate-100 py-2.5"
         }`}
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -123,8 +130,8 @@ const Navbar = () => {
                     setHoveredIndex(index)
                   }
                   className={`relative z-10 px-3 py-1.5 rounded-full block transition-colors duration-200 tracking-wide ${hoveredIndex === index
-                      ? "text-cyan-600"
-                      : "text-slate-600"
+                    ? "text-cyan-600"
+                    : "text-slate-600"
                     }`}
                 >
                   {link.name}
@@ -264,14 +271,22 @@ const Navbar = () => {
                     </div>
                   </div>
 
-                  {/* Dashboard */}
+                  {/* My Bookings */}
                   <Link
-                    href="/dashboard"
+                    href="/my-bookings"
                     className="px-5 py-3 text-sm text-slate-700 hover:bg-slate-50 flex items-center gap-3 transition-all"
                   >
-                    <FiGrid size={17} />
+                    <FiBook size={17} />
+                    My Bookings
+                  </Link>
 
-                    Dashboard
+                  {/* My Listings */}
+                  <Link
+                    href="/my-listings"
+                    className="px-5 py-3 text-sm text-slate-700 hover:bg-slate-50 flex items-center gap-3 transition-all"
+                  >
+                    <FiHome size={17} />
+                    My Listings
                   </Link>
 
                   {/* Profile */}

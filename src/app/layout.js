@@ -18,8 +18,12 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata = {
-  title: "StudyNook - Perfect Study Room Booking Platform",
-  description: "Browse and book quiet, private study rooms in your library.",
+  title: {
+    default: "StudyNook",
+    template: "StudyNook – %s",
+  },
+  description:
+    "Browse and book quiet, private study rooms in your library.",
 };
 
 export default function RootLayout({ children }) {
@@ -50,7 +54,6 @@ export default function RootLayout({ children }) {
             reverseOrder={false}
             toastOptions={{
               duration: 4000,
-
               style: {
                 background: "#0f172a",
                 color: "#ffffff",
@@ -59,14 +62,12 @@ export default function RootLayout({ children }) {
                 fontSize: "14px",
                 fontWeight: "600",
               },
-
               success: {
                 iconTheme: {
                   primary: "#06b6d4",
                   secondary: "#ffffff",
                 },
               },
-
               error: {
                 iconTheme: {
                   primary: "#ef4444",
