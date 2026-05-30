@@ -6,6 +6,7 @@ import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
 
 import toast from "react-hot-toast";
+import { authClient } from "@/lib/auth-client";
 
 import {
     FiPlusCircle,
@@ -28,6 +29,7 @@ import {
 const AddRoomPage = () => {
 
     const router = useRouter();
+    const { data: session } = authClient.useSession();
 
     // Amenities State
     const [selectedAmenities, setSelectedAmenities] = useState([]);
@@ -69,6 +71,11 @@ const AddRoomPage = () => {
     const handleSubmit = async (e) => {
 
         e.preventDefault();
+
+        if (!session?.user?.email) {
+            toast.error("Please login first");
+            return;
+        }
 
         setLoading(true);
 
