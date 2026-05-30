@@ -7,6 +7,8 @@ import { motion } from "framer-motion";
 import toast from "react-hot-toast";
 
 import DeleteRoomButton from "@/components/DeleteRoomButton";
+import BookingModal from "@/components/BookingModal";
+import { authClient } from "@/lib/auth-client";
 
 import {
   FiMapPin,
@@ -22,9 +24,11 @@ const RoomDetailsPage = () => {
   const id = params?.id;
 
   const router = useRouter();
+  const { data: session } = authClient.useSession();
 
   const [room, setRoom] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [showBookingModal, setShowBookingModal] = useState(false);
 
   // 🔥 FETCH ROOM
   useEffect(() => {
@@ -254,7 +258,16 @@ const RoomDetailsPage = () => {
 
               {/* BOOK BUTTON */}
               <button
-                onClick={() => router.push(`/booking/${room._id}`)}
+                onClick={() => {
+                  if (!session) {
+                    toast.error(
+                      "Please login to book a room"
+                    );
+                    return;
+                  }
+
+                  setShowBookingModal(true);
+                }}
                 className="w-full bg-gradient-to-r from-cyan-500 to-emerald-500 hover:from-cyan-600 hover:to-emerald-600 text-white font-bold py-4 rounded-2xl transition-all duration-300 shadow-lg hover:shadow-emerald-200 hover:scale-[1.02]"
               >
                 Book Now
@@ -308,8 +321,32 @@ const RoomDetailsPage = () => {
           </div>
         </div>
       </motion.div>
+            {showBookingModal && (
+        <BookingModal
+          room={room}
+          onClose={() =>
+            setShowBookingModal(false)
+          }
+          onSuccess={async () => {
+            try {
+              const res = await fetch(
+                `http://localhost:5000/rooms/${room._id}`
+              );
+
+              const updatedRoom =
+                await res.json();
+
+              setRoom(updatedRoom);
+            } catch (error) {
+              console.log(error);
+            }
+          }}
+        />
+      )}
     </main>
+
   );
+
 };
 
 export default RoomDetailsPage;
