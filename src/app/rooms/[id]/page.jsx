@@ -1,16 +1,12 @@
-
 "use client";
-
 import { useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
 import Image from "next/image";
 import { motion } from "framer-motion";
 import toast from "react-hot-toast";
-
 import DeleteRoomButton from "@/components/DeleteRoomButton";
 import BookingModal from "@/components/BookingModal";
 import { authClient } from "@/lib/auth-client";
-
 import {
   FiMapPin,
   FiUsers,
@@ -45,7 +41,7 @@ const RoomDetailsPage = () => {
       try {
         setLoading(true);
 
-        const res = await fetch(`http://localhost:5000/rooms/${id}`,
+        const res = await fetch(`http://localhost:5000/rooms/${id}`, 
           {
             cache: "no-store",
           }
