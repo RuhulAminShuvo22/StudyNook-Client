@@ -41,7 +41,7 @@ const RoomDetailsPage = () => {
       try {
         setLoading(true);
 
-        const res = await fetch(`http://localhost:5000/rooms/${id}`, 
+        const res = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/rooms/${id}`, 
           {
             cache: "no-store",
           }
@@ -304,7 +304,7 @@ const RoomDetailsPage = () => {
           }
           onSuccess={async () => {
             const res = await fetch(
-              `http://localhost:5000/rooms/${room._id}`
+              `${process.env.NEXT_PUBLIC_SERVER_URL}/rooms/${room._id}`
             );
             const updatedRoom =
               await res.json();

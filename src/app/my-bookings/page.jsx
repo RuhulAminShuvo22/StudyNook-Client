@@ -27,7 +27,7 @@ const MyBookingsPage = () => {
         setLoading(true);
 
         const res = await fetch(
-          `http://localhost:5000/bookings/user/${session.user.email}`
+          `${process.env.NEXT_PUBLIC_SERVER_URL}/bookings/user/${session.user.email}`
         );
 
         const data = await res.json();
@@ -50,7 +50,7 @@ const MyBookingsPage = () => {
       setCancelLoading(bookingId);
 
       const res = await fetch(
-        `http://localhost:5000/bookings/${bookingId}/cancel`,
+        `${process.env.NEXT_PUBLIC_SERVER_URL}/bookings/${bookingId}/cancel`,
         {
           method: "PATCH",
         }

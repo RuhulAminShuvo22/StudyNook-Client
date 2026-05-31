@@ -37,7 +37,7 @@ const MyListingsPage = () => {
         console.log("SESSION:", session);
         console.log("EMAIL:", email);
 
-        const url = `http://localhost:5000/rooms/user/${email}`;
+        const url = `${process.env.NEXT_PUBLIC_SERVER_URL}/rooms/user/${email}`;
 
         console.log("FETCH URL:", url);
 
@@ -74,7 +74,7 @@ const MyListingsPage = () => {
     if (!confirmDelete) return;
 
     try {
-      const res = await fetch(`http://localhost:5000/rooms/${id}`, {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/rooms/${id}`, {
         method: "DELETE",
       });
 

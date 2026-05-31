@@ -26,7 +26,7 @@ const UpdateRoomPage = () => {
   useEffect(() => {
     const fetchRoom = async () => {
       try {
-        const res = await fetch(`http://localhost:5000/rooms/${id}`);
+        const res = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/rooms/${id}`);
 
         const data = await res.json();
 
@@ -70,7 +70,7 @@ const UpdateRoomPage = () => {
     );
 
     try {
-      const res = await fetch(`http://localhost:5000/rooms/${id}`, {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/rooms/${id}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",

@@ -31,7 +31,7 @@ export default function ProfilePage() {
         if (!session?.user?.id) return;
 
         const res = await fetch(
-          `http://localhost:5000/users/${session.user.id}`
+          `${process.env.NEXT_PUBLIC_SERVER_URL}/users/${session.user.id}`
         );
 
         const data = await res.json();
@@ -62,7 +62,7 @@ export default function ProfilePage() {
       setLoading(true);
 
       const res = await fetch(
-        `http://localhost:5000/users/${session.user.id}`,
+        `${process.env.NEXT_PUBLIC_SERVER_URL}/users/${session.user.id}`,
         {
           method: "PUT",
           headers: {

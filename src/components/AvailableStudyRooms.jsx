@@ -29,7 +29,7 @@ const AvailableStudyRooms = () => {
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        fetch("http://localhost:5000/rooms")
+        fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/rooms`)
             .then((res) => res.json())
             .then((data) => {
                 setRooms(data);
