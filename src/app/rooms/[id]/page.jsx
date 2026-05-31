@@ -45,11 +45,7 @@ const RoomDetailsPage = () => {
       try {
         setLoading(true);
 
-        const res = await fetch(`http://localhost:5000/rooms/${id}`,{
-          headers: {
-            authorization: "logged in"
-          }
-        },
+        const res = await fetch(`http://localhost:5000/rooms/${id}`,
           {
             cache: "no-store",
           }
